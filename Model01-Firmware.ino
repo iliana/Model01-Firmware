@@ -50,8 +50,7 @@
   * a macro key is pressed.
   */
 
-enum { MACRO_VERSION_INFO,
-       MACRO_ANY
+enum { MACRO_ANY
      };
 
 
@@ -141,18 +140,6 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
 /* Re-enable astyle's indent enforcement */
 // *INDENT-ON*
 
-/** versionInfoMacro handles the 'firmware version info' macro
- *  When a key bound to the macro is pressed, this macro
- *  prints out the firmware build information as virtual keystrokes
- */
-
-static void versionInfoMacro(uint8_t keyState) {
-  if (keyToggledOn(keyState)) {
-    Macros.type(PSTR("Keyboardio Model 01 - Kaleidoscope "));
-    Macros.type(PSTR(BUILD_INFORMATION));
-  }
-}
-
 /** anyKeyMacro is used to provide the functionality of the 'Any' key.
  *
  * When the 'any key' macro is toggled on, a random alphanumeric key is
@@ -185,10 +172,6 @@ static void anyKeyMacro(uint8_t keyState) {
 
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   switch (macroIndex) {
-
-  case MACRO_VERSION_INFO:
-    versionInfoMacro(keyState);
-    break;
 
   case MACRO_ANY:
     anyKeyMacro(keyState);
