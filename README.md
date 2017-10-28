@@ -1,3 +1,9 @@
+This is Iliana's personal fork of the Model 01 firmware.
+
+Original readme below:
+
+---
+
 # Keyboardio Model 01 Firmware
 
 The default firmware for the Keyboardio Model 01
