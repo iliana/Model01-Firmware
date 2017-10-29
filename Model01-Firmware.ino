@@ -20,7 +20,7 @@ enum { MACRO_ANY,
        MACRO_WOBIPV6,
      }; // macros
 
-enum { QWERTY, FUNCTION }; // layers
+enum { QWERTY, FUNCTION, TMUX }; // layers
 
 // *INDENT-OFF*
 
@@ -34,14 +34,14 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
    Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
    ShiftToLayer(FUNCTION),
 
-   M(MACRO_ANY),  Key_6, Key_7, Key_8,     Key_9,         Key_0,         ___,
-   Key_Enter,     Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
-                  Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
-   ___,           Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
-   Key_RightShift, Key_LeftAlt, Key_Spacebar, Key_RightControl,
+   M(MACRO_ANY),       Key_6, Key_7, Key_8,     Key_9,         Key_0,         ___,
+   Key_Enter,          Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
+                       Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
+   ShiftToLayer(TMUX), Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+   Key_RightShift,     Key_LeftAlt, Key_Spacebar, Key_RightControl,
    ShiftToLayer(FUNCTION)),
 
-  [FUNCTION] =  KEYMAP_STACKED
+  [FUNCTION] = KEYMAP_STACKED
   (___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, XXX,
    Key_Tab,  ___,             ___,        ___,    ___,    ___,    ___,
    Key_Home, ___,             ___,        ___,    ___,    ___,
@@ -54,7 +54,22 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
                                Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
    Key_PcApplication,          Key_Mute,               Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
    ___, Key_RightAlt, Key_Enter, ___,
-   ___)
+   ___),
+
+  [TMUX] = KEYMAP_STACKED
+  (___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
+   ___,
+
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+        Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
+   ___),
 
 };
 
@@ -94,6 +109,20 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
+Key tmuxEventHandlerHook(Key key, byte row, byte col, uint8_t keyState) {
+  if (keyState & INJECTED)
+    return key;
+
+  if (keyToggledOn(keyState) && key != ShiftToLayer(TMUX) && Layer.isOn(TMUX)) {
+    handleKeyswitchEvent(LCTRL(Key_B), UNKNOWN_KEYSWITCH_LOCATION, IS_PRESSED | INJECTED);
+    kaleidoscope::hid::sendKeyboardReport();
+    handleKeyswitchEvent(LCTRL(Key_B), UNKNOWN_KEYSWITCH_LOCATION, WAS_PRESSED | INJECTED);
+    kaleidoscope::hid::sendKeyboardReport();
+  }
+
+  return key;
+}
+
 // These 'solid' color effect definitions define a rainbow of
 // LED color modes calibrated to draw 500mA or less on the
 // Keyboardio Model 01.
@@ -114,6 +143,8 @@ void setup() {
 
   Focus.addHook(FOCUS_HOOK_HELP);
   Focus.addHook(FOCUS_HOOK_VERSION);
+
+  Kaleidoscope.useEventHandlerHook(tmuxEventHandlerHook);
 }
 
 void loop() {
