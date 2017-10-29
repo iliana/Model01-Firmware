@@ -47,7 +47,9 @@
   * a macro key is pressed.
   */
 
-enum { MACRO_ANY
+enum { MACRO_ANY,
+       MACRO_WOBIPV4,
+       MACRO_WOBIPV6,
      };
 
 
@@ -121,7 +123,7 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
   (___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, XXX,
    Key_Tab,  ___,             ___,        ___,    ___,    ___,    ___,
    Key_Home, ___,             ___,        ___,    ___,    ___,
-   Key_End,  Key_PrintScreen, Key_Insert, ___,    ___,    ___,    ___,
+   Key_End,  Key_PrintScreen, Key_Insert, ___,    M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
    ___, Key_Delete, ___, ___,
    ___,
 
@@ -154,6 +156,19 @@ static void anyKeyMacro(uint8_t keyState) {
     kaleidoscope::hid::pressKey(lastKey);
 }
 
+/** Macros for quickly typing Wobscale AS64241 address prefixes
+ */
+
+static void wobscaleIPv4Macro(uint8_t keyState) {
+  if (keyToggledOn(keyState))
+    Macros.type(PSTR("209.251.245."));
+}
+
+static void wobscaleIPv6Macro(uint8_t keyState) {
+  if (keyToggledOn(keyState))
+    Macros.type(PSTR("2620:fc:c000::"));
+}
+
 
 /** macroAction dispatches keymap events that are tied to a macro
     to that macro. It takes two uint8_t parameters.
@@ -172,6 +187,12 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
 
   case MACRO_ANY:
     anyKeyMacro(keyState);
+    break;
+  case MACRO_WOBIPV4:
+    wobscaleIPv4Macro(keyState);
+    break;
+  case MACRO_WOBIPV6:
+    wobscaleIPv6Macro(keyState);
     break;
   }
   return MACRO_NONE;
