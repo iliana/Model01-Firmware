@@ -15,6 +15,8 @@
 #include "Kaleidoscope-Focus.h"
 
 
+#define isModifier(key) (key.raw >= Key_LeftControl.raw && key.raw <= Key_RightGui.raw)
+
 enum { MACRO_ANY,
        MACRO_WOBIPV4,
        MACRO_WOBIPV6,
@@ -62,14 +64,14 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
    ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___,
-   ___,
+   XXX,
 
    ___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
         Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___,
-   ___),
+   XXX),
 
 };
 
@@ -110,7 +112,7 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
 }
 
 Key tmuxEventHandlerHook(Key key, byte row, byte col, uint8_t keyState) {
-  if (keyState & INJECTED)
+  if (keyState & INJECTED || isModifier(key))
     return key;
 
   if (keyToggledOn(keyState) && key != ShiftToLayer(TMUX) && Layer.isOn(TMUX)) {
