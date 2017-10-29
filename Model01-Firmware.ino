@@ -12,6 +12,7 @@
 #include "Kaleidoscope-LEDControl.h"
 #include "LED-Off.h"
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
+#include "Kaleidoscope-LEDEffect-BootGreeting.h"
 #include "Kaleidoscope-Focus.h"
 
 
@@ -103,6 +104,7 @@ void setup() {
   Serial.begin(9600);
   Kaleidoscope.setup();
   Kaleidoscope.use(
+    &BootGreetingEffect,
     &LEDControl,
     &LEDOff,
     &solidViolet,
