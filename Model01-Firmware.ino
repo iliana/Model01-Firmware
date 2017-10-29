@@ -82,15 +82,15 @@ static void wobscaleIPv6Macro(uint8_t keyState) {
 
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   switch (macroIndex) {
-    case MACRO_ANY:
-      anyKeyMacro(keyState);
-      break;
-    case MACRO_WOBIPV4:
-      wobscaleIPv4Macro(keyState);
-      break;
-    case MACRO_WOBIPV6:
-      wobscaleIPv6Macro(keyState);
-      break;
+  case MACRO_ANY:
+    anyKeyMacro(keyState);
+    break;
+  case MACRO_WOBIPV4:
+    wobscaleIPv4Macro(keyState);
+    break;
+  case MACRO_WOBIPV6:
+    wobscaleIPv6Macro(keyState);
+    break;
   }
   return MACRO_NONE;
 }
