@@ -12,6 +12,7 @@
 #include "Kaleidoscope-LEDControl.h"
 #include "LED-Off.h"
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
+#include "Kaleidoscope-Focus.h"
 
 
 enum { MACRO_ANY,
@@ -99,15 +100,20 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
 static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
 
 void setup() {
+  Serial.begin(9600);
   Kaleidoscope.setup();
   Kaleidoscope.use(
     &LEDControl,
     &LEDOff,
     &solidViolet,
-    &Macros
+    &Macros,
+    &Focus
   );
 
   LEDOff.activate();
+
+  Focus.addHook(FOCUS_HOOK_HELP);
+  Focus.addHook(FOCUS_HOOK_VERSION);
 }
 
 void loop() {
