@@ -6,15 +6,19 @@ Original readme below:
 
 # Keyboardio Model 01 Firmware
 
-The default firmware for the Keyboardio Model 01
+_The default firmware for the Keyboardio Model 01_
 
-This is a quick start guide for folks who are familiar with Arduino and generally know what they are doing. If you want a deeper introduction, [check out the wiki.](https://github.com/keyboardio/Kaleidoscope/wiki/Keyboardio-Model-01-Introduction)
+<h3>This is a quick start guide for folks who are familiar with Arduino and prefer to use the command line. For everyone else:
+
+ * [Check out the wiki](https://github.com/keyboardio/Kaleidoscope/wiki/Keyboardio-Model-01-Introduction) for a more in depth introduction to how the Model 01 keyboard and the Kaleidoscope firmware work. 
+ 
+  * If you have questions, [The community forums are happy to help!](https://community.keyboard.io/)</h3>
 
 # Download and install
 
 ## Set up the Arduino IDE
 
-Setup the Arduino IDE on your system. Make sure you install at least version 1.6, since older version may not support all required features.
+Setup the Arduino IDE on your system. Make sure you install at least version 1.6.10, since older version may not support all required features.
 
 ### macOS
 
@@ -23,7 +27,7 @@ On macOS, install the Arduino IDE using [homebrew](http://brew.sh/) [cask](https
 
 ### Linux
 
-On Linux, your distribution's package manager probably includes the Arduino IDE, but it may be an out of date version. If your distribution installs a version of Arduino before 1.6.3 or so, you'll need to install the Arduino IDE following the instructions [on the wiki](https://github.com/keyboardio/Kaleidoscope/wiki/Install-Arduino-support-on-Linux).
+On Linux, your distribution's package manager probably includes the Arduino IDE, but it may be an out of date version. If your distribution installs a version of Arduino before 1.6.10, you'll need to install the Arduino IDE following the instructions [on the wiki](https://github.com/keyboardio/Kaleidoscope/wiki/Install-Arduino-support-on-Linux).
 
 If you install Arduino into some place that's /not/ `/usr/local/arduino`, you'll need to set the `$ARDUINO_PATH` environment variable to the directory containing the `arduino` and `arduino-builder` binaries.
 

@@ -13,6 +13,7 @@
 #include "LED-Off.h"
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
 #include "Kaleidoscope-Focus.h"
+#include "Kaleidoscope-HostPowerManagement.h"
 
 
 #define isModifier(key) (key.raw >= Key_LeftControl.raw && key.raw <= Key_RightGui.raw)
@@ -130,6 +131,26 @@ Key tmuxEventHandlerHook(Key key, byte row, byte col, uint8_t keyState) {
 // Keyboardio Model 01.
 static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
 
+void toggleLedsOnSuspendResume(kaleidoscope::HostPowerManagement::Event event) {
+  switch (event) {
+  case kaleidoscope::HostPowerManagement::Suspend:
+    LEDControl.paused = true;
+    LEDControl.set_all_leds_to({0, 0, 0});
+    LEDControl.syncLeds();
+    break;
+  case kaleidoscope::HostPowerManagement::Resume:
+    LEDControl.paused = false;
+    LEDControl.refreshAll();
+    break;
+  case kaleidoscope::HostPowerManagement::Sleep:
+    break;
+  }
+}
+
+void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event event) {
+  toggleLedsOnSuspendResume(event);
+}
+
 void setup() {
   Serial.begin(9600);
   Kaleidoscope.setup();
@@ -138,7 +159,8 @@ void setup() {
     &LEDOff,
     &solidViolet,
     &Macros,
-    &Focus
+    &Focus,
+    &HostPowerManagement
   );
 
   LEDOff.activate();
@@ -147,6 +169,7 @@ void setup() {
   Focus.addHook(FOCUS_HOOK_VERSION);
 
   Kaleidoscope.useEventHandlerHook(tmuxEventHandlerHook);
+  HostPowerManagement.enableWakeup();
 }
 
 void loop() {
