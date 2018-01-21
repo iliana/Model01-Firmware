@@ -14,9 +14,8 @@
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
 #include "Kaleidoscope-Focus.h"
 #include "Kaleidoscope-HostPowerManagement.h"
+#include "Kaleidoscope-PrefixLayer.h"
 
-
-#define isModifier(key) (key.raw >= Key_LeftControl.raw && key.raw <= Key_RightGui.raw)
 
 enum { MACRO_ANY,
        MACRO_WOBIPV4,
@@ -24,6 +23,8 @@ enum { MACRO_ANY,
      }; // macros
 
 enum { QWERTY, FUNCTION, TMUX }; // layers
+
+static const kaleidoscope::PrefixLayer::dict_t prefixlayerdict[] PROGMEM = PREFIX_DICT({TMUX, PREFIX_SEQ(LCTRL(Key_B))});
 
 // *INDENT-OFF*
 
@@ -112,20 +113,6 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
-Key tmuxEventHandlerHook(Key key, byte row, byte col, uint8_t keyState) {
-  if (keyState & INJECTED || isModifier(key))
-    return key;
-
-  if (keyToggledOn(keyState) && key != ShiftToLayer(TMUX) && Layer.isOn(TMUX)) {
-    handleKeyswitchEvent(LCTRL(Key_B), UNKNOWN_KEYSWITCH_LOCATION, IS_PRESSED | INJECTED);
-    kaleidoscope::hid::sendKeyboardReport();
-    handleKeyswitchEvent(LCTRL(Key_B), UNKNOWN_KEYSWITCH_LOCATION, WAS_PRESSED | INJECTED);
-    kaleidoscope::hid::sendKeyboardReport();
-  }
-
-  return key;
-}
-
 // These 'solid' color effect definitions define a rainbow of
 // LED color modes calibrated to draw 500mA or less on the
 // Keyboardio Model 01.
@@ -160,7 +147,8 @@ void setup() {
     &solidViolet,
     &Macros,
     &Focus,
-    &HostPowerManagement
+    &HostPowerManagement,
+    &PrefixLayer
   );
 
   LEDOff.activate();
@@ -168,8 +156,9 @@ void setup() {
   Focus.addHook(FOCUS_HOOK_HELP);
   Focus.addHook(FOCUS_HOOK_VERSION);
 
-  Kaleidoscope.useEventHandlerHook(tmuxEventHandlerHook);
   HostPowerManagement.enableWakeup();
+
+  PrefixLayer.dict = prefixlayerdict;
 }
 
 void loop() {
