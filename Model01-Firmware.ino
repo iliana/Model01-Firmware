@@ -20,6 +20,7 @@ enum { MACRO_ANY,
        MACRO_WOBIPV4,
        MACRO_WOBIPV6,
        MACRO_HAMMER_AND_SICKLE,
+       MACRO_TRANS,
      }; // macros
 
 enum { QWERTY, FUNCTION, TMUX }; // layers
@@ -47,7 +48,7 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
 
   [FUNCTION] = KEYMAP_STACKED
   (___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, XXX,
-   Key_Tab,  ___,             ___,        ___,    ___,    ___,    ___,
+   Key_Tab,  ___,             ___,        ___,    ___,    M(MACRO_TRANS),    ___,
    Key_Home, ___,             ___,        ___,    ___,    ___,
    Key_End,  Key_PrintScreen, Key_Insert, M(MACRO_HAMMER_AND_SICKLE), M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
    ___, Key_Delete, ___, ___,
@@ -104,6 +105,10 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   case MACRO_HAMMER_AND_SICKLE:
     if (keyToggledOn(keyState))
       Unicode.type(0x262d);
+    break;
+  case MACRO_TRANS:
+    if (keyToggledOn(keyState))
+      Unicode.type(0x26a7);
     break;
   }
   return MACRO_NONE;
