@@ -10,6 +10,7 @@
 #include "Kaleidoscope-LEDControl.h"
 #include "LED-Off.h"
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
+#include "Kaleidoscope-LEDEffect-DigitalRain.h"
 #include "Kaleidoscope-Focus.h"
 #include "Kaleidoscope-Unicode.h"
 #include "Kaleidoscope-HostPowerManagement.h"
@@ -145,6 +146,7 @@ void setup() {
   Kaleidoscope.use(
     &LEDControl,
     &LEDOff,
+    &LEDDigitalRainEffect,
     &solidViolet,
     &HostOS,
     &Macros,
