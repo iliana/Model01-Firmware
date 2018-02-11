@@ -1,18 +1,17 @@
 // -*- mode: c++ -*-
 // Copyright 2016 Keyboardio, inc. <jesse@keyboard.io>
-// Copyright 2017 Iliana Weller <ilianaw@buttslol.net>
+// Copyright 2018 Iliana Weller <ilianaw@buttslol.net>
 // See "LICENSE" for license details
 
-#ifndef BUILD_INFORMATION
-#define BUILD_INFORMATION "locally built"
-#endif
-
 #include "Kaleidoscope.h"
+#include "Kaleidoscope-HostOS.h"
+#include "Kaleidoscope/HostOS-select.h"
 #include "Kaleidoscope-Macros.h"
 #include "Kaleidoscope-LEDControl.h"
 #include "LED-Off.h"
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
 #include "Kaleidoscope-Focus.h"
+#include "Kaleidoscope-Unicode.h"
 #include "Kaleidoscope-HostPowerManagement.h"
 #include "Kaleidoscope-PrefixLayer.h"
 
@@ -20,6 +19,7 @@
 enum { MACRO_ANY,
        MACRO_WOBIPV4,
        MACRO_WOBIPV6,
+       MACRO_HAMMER_AND_SICKLE,
      }; // macros
 
 enum { QWERTY, FUNCTION, TMUX }; // layers
@@ -49,7 +49,7 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
   (___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, XXX,
    Key_Tab,  ___,             ___,        ___,    ___,    ___,    ___,
    Key_Home, ___,             ___,        ___,    ___,    ___,
-   Key_End,  Key_PrintScreen, Key_Insert, ___,    M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
+   Key_End,  Key_PrintScreen, Key_Insert, M(MACRO_HAMMER_AND_SICKLE), M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
    ___, Key_Delete, ___, ___,
    ___,
 
@@ -88,26 +88,22 @@ static void anyKeyMacro(uint8_t keyState) {
     kaleidoscope::hid::pressKey(lastKey);
 }
 
-static void wobscaleIPv4Macro(uint8_t keyState) {
-  if (keyToggledOn(keyState))
-    Macros.type(PSTR("209.251.245."));
-}
-
-static void wobscaleIPv6Macro(uint8_t keyState) {
-  if (keyToggledOn(keyState))
-    Macros.type(PSTR("2620:fc:c000::"));
-}
-
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   switch (macroIndex) {
   case MACRO_ANY:
     anyKeyMacro(keyState);
     break;
   case MACRO_WOBIPV4:
-    wobscaleIPv4Macro(keyState);
+    if (keyToggledOn(keyState))
+      Macros.type(PSTR("209.251.245."));
     break;
   case MACRO_WOBIPV6:
-    wobscaleIPv6Macro(keyState);
+    if (keyToggledOn(keyState))
+      Macros.type(PSTR("2620:fc:c000::"));
+    break;
+  case MACRO_HAMMER_AND_SICKLE:
+    if (keyToggledOn(keyState))
+      Unicode.type(0x262d);
     break;
   }
   return MACRO_NONE;
@@ -145,14 +141,19 @@ void setup() {
     &LEDControl,
     &LEDOff,
     &solidViolet,
+    &HostOS,
     &Macros,
     &Focus,
+    &Unicode,
     &HostPowerManagement,
     &PrefixLayer
   );
 
   LEDOff.activate();
 
+  HostOS.os(kaleidoscope::hostos::LINUX);
+
+  Focus.addHook(FOCUS_HOOK_HOSTOS);
   Focus.addHook(FOCUS_HOOK_HELP);
   Focus.addHook(FOCUS_HOOK_VERSION);
 
