@@ -70,7 +70,7 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
    XXX,
 
    ___, ___, ___, ___, ___, ___, ___,
-   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, Key_LeftCurlyBracket, Key_RightCurlyBracket, Key_LeftBracket, ___, ___,
         Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___,
