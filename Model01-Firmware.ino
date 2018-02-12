@@ -147,9 +147,9 @@ void setup() {
   Kaleidoscope.setup();
   Kaleidoscope.use(
     &LEDControl,
-    &LEDOff,
     &LEDDigitalRainEffect,
     &solidViolet,
+    &LEDOff,
     &HostOS,
     &Macros,
     &Focus,
@@ -157,8 +157,6 @@ void setup() {
     &HostPowerManagement,
     &PrefixLayer
   );
-
-  LEDOff.activate();
 
   HostOS.os(kaleidoscope::hostos::LINUX);
 
