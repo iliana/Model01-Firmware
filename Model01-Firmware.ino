@@ -3,8 +3,6 @@
 // Copyright 2018 Iliana Weller <ilianaw@buttslol.net>
 // See "LICENSE" for license details
 
-#define FOCUS_WITHOUT_DOCS 1
-
 #include "Kaleidoscope.h"
 #include "Kaleidoscope-HostOS.h"
 #include "Kaleidoscope/HostOS-select.h"
