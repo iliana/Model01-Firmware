@@ -1,0 +1,6 @@
+[submodule "Kaleidoscope-LEDEffect-DigitalRain"]
+	path = Kaleidoscope-LEDEffect-DigitalRain
+	url = https://github.com/tremby/Kaleidoscope-LEDEffect-DigitalRain.git
+[submodule "Kaleidoscope-PrefixLayer"]
+	path = Kaleidoscope-PrefixLayer
+	url = https://github.com/jamesnvc/Kaleidoscope-PrefixLayer.git
