@@ -48,7 +48,7 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
    ShiftToLayer(FUNCTION)),
 
   [FUNCTION] = KEYMAP_STACKED
-  (___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, XXX,
+  (___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, Key_LEDEffectPrevious,
    Key_Tab,  ___,             ___,        ___,    ___,    M(MACRO_TRANS),    ___,
    Key_Home, ___,             ___,        ___,    ___,    ___,
    Key_End,  Key_PrintScreen, Key_Insert, M(MACRO_HAMMER_AND_SICKLE), M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
