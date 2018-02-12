@@ -1,3 +1,5 @@
+export LOCAL_CFLAGS = -DVERSION="ilianaw-$(shell git describe --abbrev=7 --dirty --always)"
+
 # This stub makefile for a Kaleidoscope plugin pulls in 
 # all targets from the Kaleidoscope-Plugin library
 
