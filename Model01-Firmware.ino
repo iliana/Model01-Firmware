@@ -13,6 +13,7 @@
 #include "Kaleidoscope-LEDEffect-DigitalRain.h"
 #include "Kaleidoscope-Focus.h"
 #include "Kaleidoscope-Unicode.h"
+#include "Kaleidoscope-Syster.h"
 #include "Kaleidoscope-HostPowerManagement.h"
 #include "Kaleidoscope-PrefixLayer.h"
 
@@ -33,7 +34,7 @@ static const kaleidoscope::PrefixLayer::dict_t prefixlayerdict[] PROGMEM = PREFI
 KEYMAPS(
 
   [QWERTY] = KEYMAP_STACKED
-  (___,          Key_1, Key_2, Key_3, Key_4, Key_5, Key_LEDEffectNext,
+  (SYSTER,       Key_1, Key_2, Key_3, Key_4, Key_5, Key_LEDEffectNext,
    Key_Backtick, Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
    Key_PageUp,   Key_A, Key_S, Key_D, Key_F, Key_G,
    Key_PageDown, Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
@@ -115,6 +116,20 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
+void systerAction(kaleidoscope::Syster::action_t action, const char *symbol) {
+  switch (action) {
+  case kaleidoscope::Syster::StartAction:
+    break;
+  case kaleidoscope::Syster::EndAction:
+    break;
+  case kaleidoscope::Syster::SymbolAction:
+    if (strcmp(symbol, "degree") == 0) {
+      Unicode.type(0x00b0);
+    }
+    break;
+  }
+}
+
 // These 'solid' color effect definitions define a rainbow of
 // LED color modes calibrated to draw 500mA or less on the
 // Keyboardio Model 01.
@@ -140,10 +155,21 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
+void loopHook(bool postClear) {
+  if (postClear)
+    return;
+
+  if (Syster.is_active())
+    LEDControl.setCrgbAt(0, 0, {0xff, 0xff, 0xff});
+  else
+    LEDControl.refreshAt(0, 0);
+}
+
 void setup() {
   Serial.begin(9600);
   Kaleidoscope.setup();
   Kaleidoscope.use(
+    &Syster,
     &LEDControl,
     &LEDDigitalRainEffect,
     &solidViolet,
@@ -156,6 +182,12 @@ void setup() {
     &PrefixLayer
   );
 
+  /*
+   * FIXME: Work around for https://github.com/keyboardio/Kaleidoscope-Syster/issues/3
+   * https://trunk.mad-scientist.club/@algernon/99518558666830872
+   */
+  KeyboardHardware.maskKey(0, 0);
+
   HostOS.os(kaleidoscope::hostos::LINUX);
 
   Focus.addHook(FOCUS_HOOK_HOSTOS);
@@ -165,6 +197,8 @@ void setup() {
   HostPowerManagement.enableWakeup();
 
   PrefixLayer.dict = prefixlayerdict;
+
+  Kaleidoscope.useLoopHook(loopHook);
 }
 
 void loop() {
