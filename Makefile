@@ -1,4 +1,4 @@
-export LOCAL_CFLAGS = -DVERSION="ilianaw-$(shell git describe --abbrev=7 --dirty --always)"
+export LOCAL_CFLAGS = -DVERSION="ilianaw-$(shell git describe --abbrev=7 --dirty --always)" -DKALEIDOSCOPE_HIDADAPTOR_DISABLE_ABSOLUTE_MOUSE
 
 # This stub makefile for a Kaleidoscope plugin pulls in 
 # all targets from the Kaleidoscope-Plugin library
