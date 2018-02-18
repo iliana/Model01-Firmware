@@ -114,18 +114,16 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
       Unicode.type(0x26a7);
     break;
   case MACRO_RUST_DEBUG:
-    if (keyToggledOn(keyState)) {
-      // println!("{:?}", ); + left arrow x 2
-      return MACRODOWN(T(P), T(R), T(I), T(N), T(T), T(L), T(N),
-                       D(LeftShift), T(1), T(9), T(Quote), U(LeftShift),
-                       T(LeftCurlyBracket),
-                       D(LeftShift), T(Semicolon), T(Slash), U(LeftShift),
-                       T(RightCurlyBracket),
-                       D(LeftShift), T(Quote), U(LeftShift),
-                       T(Comma), T(Spacebar),
-                       D(LeftShift), T(0), U(LeftShift),
-                       T(Semicolon), T(LeftArrow), T(LeftArrow));
-    }
+    // println!("{:?}", ); + left arrow x 2
+    return MACRODOWN(T(P), T(R), T(I), T(N), T(T), T(L), T(N),
+                     D(LeftShift), T(1), T(9), T(Quote), U(LeftShift),
+                     T(LeftCurlyBracket),
+                     D(LeftShift), T(Semicolon), T(Slash), U(LeftShift),
+                     T(RightCurlyBracket),
+                     D(LeftShift), T(Quote), U(LeftShift),
+                     T(Comma), T(Spacebar),
+                     D(LeftShift), T(0), U(LeftShift),
+                     T(Semicolon), T(LeftArrow), T(LeftArrow));
     break;
   }
   return MACRO_NONE;
