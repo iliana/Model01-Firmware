@@ -138,9 +138,10 @@ void systerAction(kaleidoscope::Syster::action_t action, const char *symbol) {
   case kaleidoscope::Syster::EndAction:
     break;
   case kaleidoscope::Syster::SymbolAction:
-    if (strcmp(symbol, "degree") == 0) {
+    if (strcmp(symbol, "degree") == 0)
       Unicode.type(0x00b0);
-    }
+    else if (strcmp(symbol, "em") == 0)
+      Unicode.type(0x2014);
     break;
   }
 }
