@@ -23,6 +23,7 @@ enum { MACRO_ANY,
        MACRO_WOBIPV6,
        MACRO_HAMMER_AND_SICKLE,
        MACRO_TRANS,
+       MACRO_RUST_DEBUG,
      }; // macros
 
 enum { QWERTY, FUNCTION, TMUX }; // layers
@@ -49,9 +50,9 @@ KEYMAPS(
    ShiftToLayer(FUNCTION)),
 
   [FUNCTION] = KEYMAP_STACKED
-  (___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, Key_LEDEffectPrevious,
-   Key_Tab,  ___,             ___,        ___,    ___,    M(MACRO_TRANS),    ___,
-   Key_Home, ___,             ___,        ___,    ___,    ___,
+  (___,      Key_F1,          Key_F2,     Key_F3,                     Key_F4,           Key_F5,           Key_LEDEffectPrevious,
+   Key_Tab,  ___,             ___,        ___,                        ___,              M(MACRO_TRANS),   ___,
+   Key_Home, ___,             ___,        M(MACRO_RUST_DEBUG),        ___,              ___,
    Key_End,  Key_PrintScreen, Key_Insert, M(MACRO_HAMMER_AND_SICKLE), M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
    ___, Key_Delete, ___, ___,
    ___,
@@ -111,6 +112,20 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   case MACRO_TRANS:
     if (keyToggledOn(keyState))
       Unicode.type(0x26a7);
+    break;
+  case MACRO_RUST_DEBUG:
+    if (keyToggledOn(keyState)) {
+      // println!("{:?}", ); + left arrow x 2
+      return MACRODOWN(T(P), T(R), T(I), T(N), T(T), T(L), T(N),
+                       D(LeftShift), T(1), T(9), T(Quote), U(LeftShift),
+                       T(LeftCurlyBracket),
+                       D(LeftShift), T(Semicolon), T(Slash), U(LeftShift),
+                       T(RightCurlyBracket),
+                       D(LeftShift), T(Quote), U(LeftShift),
+                       T(Comma), T(Spacebar),
+                       D(LeftShift), T(0), U(LeftShift),
+                       T(Semicolon), T(LeftArrow), T(LeftArrow));
+    }
     break;
   }
   return MACRO_NONE;
