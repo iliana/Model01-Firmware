@@ -1,6 +1,6 @@
 // -*- mode: c++ -*-
 // Copyright 2016 Keyboardio, inc. <jesse@keyboard.io>
-// Copyright 2018 Iliana Weller <ilianaw@buttslol.net>
+// Copyright 2018 iliana weller <ilianaw@buttslol.net>
 // See "LICENSE" for license details
 
 #include "Kaleidoscope.h"

@@ -1,4 +1,4 @@
-This is Iliana's personal fork of the Model 01 firmware.
+This is iliana's personal fork of the Model 01 firmware.
 
 Original readme below:
 
