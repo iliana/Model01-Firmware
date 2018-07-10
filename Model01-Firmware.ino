@@ -15,6 +15,8 @@
 #include "Kaleidoscope-Unicode.h"
 #include "Kaleidoscope-Syster.h"
 #include "Kaleidoscope-HostPowerManagement.h"
+#include "Kaleidoscope-MagicCombo.h"
+#include "Kaleidoscope-USB-Quirks.h"
 #include "Kaleidoscope-PrefixLayer.h"
 
 
@@ -184,26 +186,41 @@ void loopHook(bool postClear) {
     LEDControl.refreshAt(0, 0);
 }
 
+enum {
+  COMBO_TOGGLE_NKRO_MODE
+};
+
+static void toggleKeyboardProtocol(uint8_t combo_index) {
+  USBQuirks.toggleKeyboardProtocol();
+}
+
+USE_MAGIC_COMBOS({.action = toggleKeyboardProtocol,
+                  // Left Fn + Esc + Shift
+                  .keys = { R3C6, R2C6, R3C7 }
+                 });
+
+KALEIDOSCOPE_INIT_PLUGINS(
+  Syster,
+  LEDControl,
+  LEDDigitalRainEffect,
+  solidViolet,
+  LEDOff,
+  HostOS,
+  Macros,
+  Focus,
+  Unicode,
+  HostPowerManagement,
+  MagicCombo,
+  USBQuirks,
+  PrefixLayer
+);
+
 void setup() {
   Serial.begin(9600);
   Kaleidoscope.setup();
-  Kaleidoscope.use(
-    &Syster,
-    &LEDControl,
-    &LEDDigitalRainEffect,
-    &solidViolet,
-    &LEDOff,
-    &HostOS,
-    &Macros,
-    &Focus,
-    &Unicode,
-    &HostPowerManagement,
-    &PrefixLayer
-  );
 
   /*
-   * FIXME: Work around for https://github.com/keyboardio/Kaleidoscope-Syster/issues/3
-   * https://trunk.mad-scientist.club/@algernon/99518558666830872
+   * Work around for https://github.com/keyboardio/Kaleidoscope-Syster/issues/3
    */
   KeyboardHardware.maskKey(0, 0);
 
@@ -212,8 +229,6 @@ void setup() {
   Focus.addHook(FOCUS_HOOK_HOSTOS);
   Focus.addHook(FOCUS_HOOK_HELP);
   Focus.addHook(FOCUS_HOOK_VERSION);
-
-  HostPowerManagement.enableWakeup();
 
   PrefixLayer.dict = prefixlayerdict;
 
