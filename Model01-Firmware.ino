@@ -27,7 +27,7 @@ enum { MACRO_ANY,
        MACRO_TRANS,
        MACRO_RUST_DEBUG,
        MACRO_SHRUG,
-       MACRO_ZWJ,
+       MACRO_ZWS,
      }; // macros
 
 enum { QWERTY, FUNCTION, TMUX }; // layers
@@ -57,7 +57,7 @@ KEYMAPS(
   (___,      Key_F1,          Key_F2,         Key_F3,                     Key_F4,           Key_F5,           Key_LEDEffectPrevious,
    Key_Tab,  ___,             ___,            ___,                        ___,              M(MACRO_TRANS),   ___,
    Key_Home, ___,             M(MACRO_SHRUG), M(MACRO_RUST_DEBUG),        ___,              ___,
-   Key_End,  M(MACRO_ZWJ),    ___,            M(MACRO_HAMMER_AND_SICKLE), M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
+   Key_End,  M(MACRO_ZWS),    ___,            M(MACRO_HAMMER_AND_SICKLE), M(MACRO_WOBIPV6), M(MACRO_WOBIPV4), ___,
    ___, Key_Delete, ___, ___,
    ___,
 
@@ -147,9 +147,9 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
       Unicode.type(0xaf);
     }
     break;
-  case MACRO_ZWJ:
+  case MACRO_ZWS:
     if (keyToggledOn(keyState))
-      Unicode.type(0x200d);
+      Unicode.type(0x200b);
     break;
   }
   return MACRO_NONE;
