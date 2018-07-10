@@ -176,15 +176,18 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
-void loopHook(bool postClear) {
-  if (postClear)
-    return;
-
-  if (Syster.is_active())
-    LEDControl.setCrgbAt(0, 0, {0xff, 0xff, 0xff});
-  else
-    LEDControl.refreshAt(0, 0);
-}
+class SysterLED_ : public kaleidoscope::Plugin {
+ public:
+  SysterLED_(void) {}
+  kaleidoscope::EventHandlerResult beforeEachCycle() {
+    if (Syster.is_active())
+      LEDControl.setCrgbAt(0, 0, {0xff, 0xff, 0xff});
+    else
+      LEDControl.refreshAt(0, 0);
+    return kaleidoscope::EventHandlerResult::OK;
+  }
+};
+SysterLED_ SysterLED;
 
 enum {
   COMBO_TOGGLE_NKRO_MODE
@@ -212,7 +215,8 @@ KALEIDOSCOPE_INIT_PLUGINS(
   HostPowerManagement,
   MagicCombo,
   USBQuirks,
-  PrefixLayer
+  PrefixLayer,
+  SysterLED
 );
 
 void setup() {
@@ -231,8 +235,6 @@ void setup() {
   Focus.addHook(FOCUS_HOOK_VERSION);
 
   PrefixLayer.dict = prefixlayerdict;
-
-  Kaleidoscope.useLoopHook(loopHook);
 }
 
 void loop() {
