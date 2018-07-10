@@ -76,7 +76,7 @@ KEYMAPS(
    XXX,
 
    ___, ___, ___, ___, ___, ___, ___,
-   ___, ___, Key_LeftCurlyBracket, Key_RightCurlyBracket, Key_LeftBracket, ___, ___,
+   ___, ___, Key_LeftCurlyBracket, Key_RightCurlyBracket, Key_LeftBracket, Key_RightBracket, ___,
         Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___,
