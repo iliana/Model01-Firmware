@@ -247,8 +247,6 @@ void setup() {
    */
   KeyboardHardware.maskKey(0, 0);
 
-  LEDDigitalRainEffect.DROP_TICKS = 36;
-
   HostOS.os(kaleidoscope::hostos::LINUX);
 
   Focus.addHook(FOCUS_HOOK_HOSTOS);
