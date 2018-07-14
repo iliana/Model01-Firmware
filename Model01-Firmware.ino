@@ -1,4 +1,4 @@
-// -*- mode: c++ -*-
+// vim: set ft=cpp:
 // Copyright 2016 Keyboardio, inc. <jesse@keyboard.io>
 // Copyright 2018 iliana weller <ilianaw@buttslol.net>
 // See "LICENSE" for license details
