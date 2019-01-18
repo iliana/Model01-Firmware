@@ -3,7 +3,7 @@
 	url = https://github.com/tremby/Kaleidoscope-LEDEffect-DigitalRain.git
 [submodule "Kaleidoscope-PrefixLayer"]
 	path = Kaleidoscope-PrefixLayer
-	url = https://github.com/ilianaw/Kaleidoscope-PrefixLayer.git
-[submodule "hardware/keyboardio/avr"]
-	path = hardware/keyboardio/avr
-	url = https://github.com/keyboardio/Arduino-Boards.git
+	url = https://github.com/jamesnvc/Kaleidoscope-PrefixLayer.git
+[submodule "hardware/keyboardio"]
+	path = hardware/keyboardio
+	url = https://github.com/keyboardio/Kaleidoscope-Bundle-Keyboardio.git

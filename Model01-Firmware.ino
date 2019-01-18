@@ -5,13 +5,11 @@
 
 #include "Kaleidoscope.h"
 #include "Kaleidoscope-HostOS.h"
-#include "Kaleidoscope/HostOS-select.h"
 #include "Kaleidoscope-Macros.h"
 #include "Kaleidoscope-LEDControl.h"
-#include "LED-Off.h"
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
 #include "Kaleidoscope-LEDEffect-DigitalRain.h"
-#include "Kaleidoscope-Focus.h"
+#include "Kaleidoscope-FocusSerial.h"
 #include "Kaleidoscope-Unicode.h"
 #include "Kaleidoscope-Syster.h"
 #include "Kaleidoscope-HostPowerManagement.h"
@@ -32,7 +30,7 @@ enum { MACRO_ANY,
 
 enum { QWERTY, FUNCTION, TMUX }; // layers
 
-static const kaleidoscope::PrefixLayer::dict_t prefixlayerdict[] PROGMEM = PREFIX_DICT({TMUX, PREFIX_SEQ(LCTRL(Key_B))});
+static const kaleidoscope::plugin::PrefixLayer::dict_t prefixlayerdict[] PROGMEM = PREFIX_DICT({TMUX, PREFIX_SEQ(LCTRL(Key_B))});
 
 // *INDENT-OFF*
 
@@ -89,11 +87,14 @@ KEYMAPS(
 
 static void anyKeyMacro(uint8_t keyState) {
   static Key lastKey;
-  if (keyToggledOn(keyState))
+  bool toggledOn = false;
+  if (keyToggledOn(keyState)) {
     lastKey.keyCode = Key_A.keyCode + (uint8_t)(millis() % 36);
+    toggledOn = true;
+  }
 
   if (keyIsPressed(keyState))
-    kaleidoscope::hid::pressKey(lastKey);
+    kaleidoscope::hid::pressKey(lastKey, toggledOn);
 }
 
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
@@ -230,6 +231,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   HostOS,
   Macros,
   Focus,
+  FocusHostOSCommand,
   Unicode,
   HostPowerManagement,
   MagicCombo,
@@ -248,10 +250,6 @@ void setup() {
   KeyboardHardware.maskKey(0, 0);
 
   HostOS.os(kaleidoscope::hostos::LINUX);
-
-  Focus.addHook(FOCUS_HOOK_HOSTOS);
-  Focus.addHook(FOCUS_HOOK_HELP);
-  Focus.addHook(FOCUS_HOOK_VERSION);
 
   PrefixLayer.dict = prefixlayerdict;
 }
