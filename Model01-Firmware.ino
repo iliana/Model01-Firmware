@@ -198,7 +198,7 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
 
 class SysterLED_ : public kaleidoscope::Plugin {
  public:
-  SysterLED_(void) {}
+  SysterLED_() {}
   kaleidoscope::EventHandlerResult beforeEachCycle() {
     if (Syster.is_active())
       LEDControl.setCrgbAt(0, 0, {0xff, 0xff, 0xff});
@@ -208,6 +208,26 @@ class SysterLED_ : public kaleidoscope::Plugin {
   }
 };
 SysterLED_ SysterLED;
+
+class FocusVersionCommand_ : public kaleidoscope::Plugin {
+ public:
+  FocusVersionCommand_() {}
+
+  kaleidoscope::EventHandlerResult onFocusEvent(const char *command) {
+    const char *cmd = PSTR("version");
+
+    if (::Focus.handleHelp(command, cmd))
+      return kaleidoscope::EventHandlerResult::OK;
+
+    if (strcmp_P(command, cmd) == 0) {
+      ::Focus.send(F(VERSION));
+      return kaleidoscope::EventHandlerResult::EVENT_CONSUMED;
+    }
+
+    return kaleidoscope::EventHandlerResult::OK;
+  }
+};
+FocusVersionCommand_ FocusVersionCommand;
 
 enum {
   COMBO_TOGGLE_NKRO_MODE
@@ -232,6 +252,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   Macros,
   Focus,
   FocusHostOSCommand,
+  FocusVersionCommand,
   Unicode,
   HostPowerManagement,
   MagicCombo,
