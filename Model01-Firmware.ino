@@ -156,13 +156,13 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
-void systerAction(kaleidoscope::Syster::action_t action, const char *symbol) {
+void systerAction(kaleidoscope::plugin::Syster::action_t action, const char *symbol) {
   switch (action) {
-  case kaleidoscope::Syster::StartAction:
+  case kaleidoscope::plugin::Syster::StartAction:
     break;
-  case kaleidoscope::Syster::EndAction:
+  case kaleidoscope::plugin::Syster::EndAction:
     break;
-  case kaleidoscope::Syster::SymbolAction:
+  case kaleidoscope::plugin::Syster::SymbolAction:
     if (strcmp(symbol, "degree") == 0)
       Unicode.type(0x00b0);
     else if (strcmp(symbol, "em") == 0)
@@ -174,25 +174,25 @@ void systerAction(kaleidoscope::Syster::action_t action, const char *symbol) {
 // These 'solid' color effect definitions define a rainbow of
 // LED color modes calibrated to draw 500mA or less on the
 // Keyboardio Model 01.
-static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
+static kaleidoscope::plugin::LEDSolidColor solidViolet(130, 0, 120);
 
-void toggleLedsOnSuspendResume(kaleidoscope::HostPowerManagement::Event event) {
+void toggleLedsOnSuspendResume(kaleidoscope::plugin::HostPowerManagement::Event event) {
   switch (event) {
-  case kaleidoscope::HostPowerManagement::Suspend:
-    LEDControl.paused = true;
+  case kaleidoscope::plugin::HostPowerManagement::Suspend:
     LEDControl.set_all_leds_to({0, 0, 0});
     LEDControl.syncLeds();
+    LEDControl.paused = true;
     break;
-  case kaleidoscope::HostPowerManagement::Resume:
+  case kaleidoscope::plugin::HostPowerManagement::Resume:
     LEDControl.paused = false;
     LEDControl.refreshAll();
     break;
-  case kaleidoscope::HostPowerManagement::Sleep:
+  case kaleidoscope::plugin::HostPowerManagement::Sleep:
     break;
   }
 }
 
-void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event event) {
+void hostPowerManagementEventHandler(kaleidoscope::plugin::HostPowerManagement::Event event) {
   toggleLedsOnSuspendResume(event);
 }
 
