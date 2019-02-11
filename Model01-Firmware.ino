@@ -133,7 +133,10 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   case MACRO_SHRUG:
     // Originally from algernon: https://github.com/algernon/Model01-sketch/blob/721187bc8f2205a4b6bf798377f4cfb79e4deb36/src/Leader.cpp#L52-L66
     if (keyToggledOn(keyState)) {
+      bool markdown = kaleidoscope::hid::wasModifierKeyActive(Key_LeftShift) || kaleidoscope::hid::wasModifierKeyActive(Key_RightShift);
       Unicode.type(0xaf);
+      if (markdown)
+        Macros.play(MACRO(Tc(Backslash), Tc(Backslash)));
       Macros.play(MACRO(Tc(Backslash),
                         D(RightShift),
                         Tc(Minus),
@@ -141,8 +144,12 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
                         U(RightShift)));
       Unicode.type(0x30c4);
       Macros.play(MACRO(D(RightShift),
-                        Tc(0),
-                        Tc(Minus),
+                        Tc(0)));
+      if (markdown)
+        Macros.play(MACRO(U(RightShift),
+                          Tc(Backslash),
+                          D(RightShift)));
+      Macros.play(MACRO(Tc(Minus),
                         U(RightShift),
                         Tc(Slash)));
       Unicode.type(0xaf);
