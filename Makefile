@@ -5,6 +5,6 @@ export LOCAL_CFLAGS = -DVERSION="ilianaw-$(shell git describe --abbrev=7 --dirty
 
 SKETCHBOOK_DIR ?= $(CURDIR)
 BOARD_HARDWARE_PATH ?= $(SKETCHBOOK_DIR)/hardware
-KALEIDOSCOPE_PLUGIN_MAKEFILE_DIR ?= keyboardio/avr/build-tools/makefiles/
+KALEIDOSCOPE_PLUGIN_MAKEFILE_DIR ?= keyboardio/build-tools/makefiles/
 
 include $(BOARD_HARDWARE_PATH)/$(KALEIDOSCOPE_PLUGIN_MAKEFILE_DIR)/rules.mk
