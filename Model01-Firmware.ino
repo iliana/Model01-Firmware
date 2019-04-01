@@ -1,6 +1,6 @@
 // vim: set ft=cpp:
 // Copyright 2016 Keyboardio, inc. <jesse@keyboard.io>
-// Copyright 2018 iliana weller <ilianaw@buttslol.net>
+// Copyright 2019 iliana weller <ilianaw@buttslol.net>
 // See "LICENSE" for license details
 
 #include "Kaleidoscope.h"
@@ -26,6 +26,7 @@ enum { MACRO_ANY,
        MACRO_RUST_DEBUG,
        MACRO_SHRUG,
        MACRO_ZWS,
+       MACRO_IMDS,
      }; // macros
 
 enum { QWERTY, FUNCTION, TMUX }; // layers
@@ -62,7 +63,7 @@ KEYMAPS(
    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
    Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
                                Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
-   Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
+   Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, M(MACRO_IMDS),   Key_Backslash,    Key_Pipe,
    ___, Key_RightAlt, Key_Enter, ___,
    ___),
 
@@ -158,6 +159,10 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   case MACRO_ZWS:
     if (keyToggledOn(keyState))
       Unicode.type(0x200b);
+    break;
+  case MACRO_IMDS:
+    if (keyToggledOn(keyState))
+      Macros.type(PSTR("169.254.169.254/latest"));
     break;
   }
   return MACRO_NONE;
